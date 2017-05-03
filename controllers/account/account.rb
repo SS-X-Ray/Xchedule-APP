@@ -9,9 +9,9 @@ class XcheduleApp < Sinatra::Base
   end
 
   post '/account/login/?' do
-    puts "CREDENTIALS: #{params[:username]} - #{params[:password]}"
+    puts "CREDENTIALS: #{params[:email]} - #{params[:password]}"
     @current_account = FindAuthenticatedAccount.new(settings.config).call(
-      username: params[:username], password: params[:password]
+      email: params[:email], password: params[:password]
     )
 
     if @current_account
@@ -19,7 +19,7 @@ class XcheduleApp < Sinatra::Base
       flash[:error] = "Welcome back #{@current_account['username']}"
       slim :home
     else
-      flash[:error] = 'Your username or password did not match our records'
+      flash[:error] = 'Your email or password did not match our records'
       slim :login
     end
   end
