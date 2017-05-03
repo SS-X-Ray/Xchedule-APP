@@ -15,3 +15,7 @@ desc 'Rake all the Ruby'
 task :rubocop do
   `rubopcop **/*.rb`
 end
+
+task :run do
+  sh 'rerun "rackup -p 9595"'
+end
