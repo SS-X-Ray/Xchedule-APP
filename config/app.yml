@@ -1,0 +1,9 @@
+---
+development:
+  API_URL: 'http://localhost:9292/api/v1'
+
+test:
+  API_URL: 'http://localhost:9292/api/v1'
+
+production:
+  API_URL: ''

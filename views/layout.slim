@@ -1,0 +1,13 @@
+doctype html
+html
+  head
+    title ConfigShare
+    link rel='stylesheet' href='/style.css'
+  body
+    header
+      h1 Config Share
+    nav
+      == slim :nav
+    section
+      == slim :flash_bar
+      == yield
