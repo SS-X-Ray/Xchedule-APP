@@ -1,0 +1,14 @@
+a href='/'
+  == 'HOME'
+= ' | '
+- if @current_account
+  = "#{@current_account['username']} | "
+  a href="/account/#{@current_account['username']}" account
+  = ' | '
+  a href='/account/logout' logout
+- else
+  a href='/account/login'
+    = 'login'
+  = ' | '
+  a href='/account/register'
+    = 'register'
