@@ -3,17 +3,27 @@
 source 'https://rubygems.org'
 ruby '2.4.0'
 
+# web
 gem 'econfig'
 gem 'puma'
 gem 'rack-flash3'
-gem 'rack-ssl-enforcer'
 gem 'sinatra'
 gem 'slim'
 
+# Security
+gem 'rack-ssl-enforcer'
+gem 'rbnacl-libsodium'
+
+# Communication
+gem 'fakeredis'
+gem 'http'
+gem 'pony'
+gem 'redis'
+gem 'redis-rack'
+
+# Diagnostic
 gem 'rake'
 gem 'tux'
-
-gem 'http'
 
 group :test do
   gem 'minitest'
