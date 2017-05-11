@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 require_relative '../lib/init.rb'
 require 'econfig'
-require 'fakeredis'
 require 'sinatra'
 require 'rack-flash'
 require 'rack/ssl-enforcer'
@@ -28,8 +27,7 @@ class XcheduleApp < Sinatra::Base
     SecureSession.setup(settings.config)
   end
   # use Rack::Session::Cookie, expire_after: ONE_MONTH
-  # use Rack::Session::Redis, expire_after: ONE_MONTH, redis_server: settings.config.REDIS_URL
-  use Rack::Session::Redis, expire_after: ONE_MONTH
+  use Rack::Session::Redis, expire_after: ONE_MONTH, redis_server: settings.config.REDIS_URL
   use Rack::Flash
 
   before do
