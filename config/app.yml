@@ -1,9 +1,13 @@
 ---
 development:
   API_URL: 'http://localhost:9292/api/v1'
+  REDIS_URL: ''
+  MSG_KEY: '0aROSpEnlLw5kENYGBfV98j5eeX1kJeeoOLqVBjRedwZppkJJULILzwuPhJVyMVx+6hl90wYk847E+b8Tvafrg=='
 
 test:
   API_URL: 'http://localhost:9292/api/v1'
+  REDIS_URL: ''
+  MSG_KEY: '0aROSpEnlLw5kENYGBfV98j5eeX1kJeeoOLqVBjRedwZppkJJULILzwuPhJVyMVx+6hl90wYk847E+b8Tvafrg=='
 
 production:
   API_URL: ''
