@@ -11,6 +11,6 @@ class FindAuthenticatedAccount
   def call(email:, password:)
     response = HTTP.post("#{@config.API_URL}/account/authenticate",
                          json: { email: email, password: password })
-    response.code == 200 ? response.parse['account'] : nil
+    response.code == 200 ? response.parse : nil
   end
 end
