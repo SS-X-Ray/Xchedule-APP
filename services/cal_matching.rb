@@ -41,7 +41,7 @@ class CalMatching
     limitation = []
     (start_date..end_date).step(EVERY_DAY) do |date|
       limitation << (date..(date + param[:up] * A_HOUR))
-      limitation << ((date + parma[:low] * A_HOUR)..(date + A_DAY))
+      limitation << ((date + param[:low] * A_HOUR)..(date + A_DAY))
       limitation.flatten
     end
   end
