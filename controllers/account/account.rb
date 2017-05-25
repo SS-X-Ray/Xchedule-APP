@@ -17,9 +17,15 @@ class XcheduleApp < Sinatra::Base
   end
 
   post '/account/login/?' do
-    auth = FindAuthenticatedAccount.new(settings.config).call(
-      username: params[:username], password: params[:password]
-    )
+    credentials = LoginCredentials.call(params)
+
+    if credentials.failure?
+      flash[:error] = 'Please enter both username and password'
+      redirect '/account/login'
+    end
+
+    auth = FindAuthenticatedAccount.new(settings.config)
+                                   .call(credentials)
 
     if auth
       authenticate_login(auth)
