@@ -1,9 +1,11 @@
 ---
 development:
   API_URL: 'http://localhost:9292/api/v1'
+  APP_URL: 'http://localhost:9595'
 
 test:
   API_URL: 'http://localhost:9292/api/v1'
+  APP_URL: 'http://localhost:9595'
 
 production:
   API_URL: ''

@@ -11,10 +11,8 @@ LoginCredentials = Dry::Validation.Form do
 end
 
 Registration = Dry::Validation.Form do
-  # required(:username).filled(format?: USERNAME_REGEX)
-  # required(:email).filled(format?: EMAIL_REGEX)
+  required(:username).filled(format?: USERNAME_REGEX)
   required(:email).filled(format?: EMAIL_REGEX)
-  required(:password).filled
 end
 
 Passwords = Dry::Validation.Form do
