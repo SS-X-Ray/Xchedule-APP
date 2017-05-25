@@ -1,10 +1,15 @@
-h1 User Account
-table
-  tr
-    td Username:
-    td 
-      == @current_account['username']
-  tr
-    td Email:
-    td 
-      == @current_account['email']
+div class='row'
+  div class='col-lg-6 col-lg-offset-3'
+    div class='well'
+      h4 User Account
+      table class="table"
+        tr
+          td 
+            strong User Name
+          td
+            == @current_account['username']
+        tr
+          td
+            strong Email
+          td
+            == @current_account['email']
