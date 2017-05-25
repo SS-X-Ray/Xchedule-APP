@@ -6,7 +6,7 @@ class CreateVerifiedAccount
   end
 
   def call(username:, email:, password:)
-    response = HTTP.post("#{@config.API_URL}/accounts/",
+    response = HTTP.post("#{@config.API_URL}/account/",
                          json: { username: username,
                                  email: email,
                                  password: password })
