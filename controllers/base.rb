@@ -6,6 +6,7 @@ require 'slim/include'
 require 'rack-flash'
 require 'rack/ssl-enforcer'
 require 'rack/session/redis'
+require_relative '../forms/init.rb'
 
 # Base class for ConfigShare Web Application
 class XcheduleApp < Sinatra::Base

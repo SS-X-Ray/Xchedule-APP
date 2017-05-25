@@ -6,13 +6,15 @@ USERNAME_REGEX = /^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/
 EMAIL_REGEX = /@/
 
 LoginCredentials = Dry::Validation.Form do
-  required(:username).filled
+  required(:email).filled
   required(:password).filled
 end
 
 Registration = Dry::Validation.Form do
-  required(:username).filled(format?: USERNAME_REGEX)
+  # required(:username).filled(format?: USERNAME_REGEX)
+  # required(:email).filled(format?: EMAIL_REGEX)
   required(:email).filled(format?: EMAIL_REGEX)
+  required(:password).filled
 end
 
 Passwords = Dry::Validation.Form do
