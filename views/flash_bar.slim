@@ -1,6 +1,8 @@
 - if flash[:error]
-  div class='flash error'
-    = flash[:error]
+  div class="alert alert-dismissible alert-danger" &times;
+    button type="button" class="close" data-dismiss="alert"
+      = flash[:error]
 - if flash[:notice]
-  div class='flash notice'
-    = flash[:notice]
+  div class="alert alert-dismissible alert-warning" &times;
+    button type="button" class="close" data-dismiss="alert"
+      = flash[:notice]

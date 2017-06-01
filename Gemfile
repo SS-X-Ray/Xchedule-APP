@@ -11,6 +11,10 @@ gem 'sinatra'
 gem 'slim'
 
 # Security
+gem 'dry-container'
+gem 'dry-monads'
+gem 'dry-transaction'
+gem 'dry-validation'
 gem 'rack-ssl-enforcer'
 gem 'rbnacl-libsodium'
 
