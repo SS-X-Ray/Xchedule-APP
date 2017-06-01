@@ -9,3 +9,4 @@ test:
 
 production:
   API_URL: ''
+  APP_URL: ''

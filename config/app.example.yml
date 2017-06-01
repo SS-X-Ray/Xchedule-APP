@@ -1,0 +1,12 @@
+---
+development:
+  API_URL: ''
+  APP_URL: ''
+
+test:
+  API_URL: ''
+  APP_URL: ''
+
+production:
+  API_URL: ''
+  APP_URL: ''
