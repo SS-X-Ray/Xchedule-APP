@@ -1,0 +1,5 @@
+en:
+  errors:
+    name: 'Activity name must be filled'
+    duration: 'Need specify duration time'
+    activity_length: 'Need specify activity length'
