@@ -27,16 +27,20 @@ class XcheduleApp < Sinatra::Base
 
     SecureMessage.setup(settings.config)
     SecureSession.setup(settings.config)
+
+    # 不知道
+    use Rack::Session::Pool, expire_after: ONE_MONTH
+    use Rack::Session::Redis, expire_after: ONE_MONTH, redis_server: settings.config.REDIS_URL
   end
   # use Rack::Session::Cookie, expire_after: ONE_MONTH
   # use Rack::Session::Redis, expire_after: ONE_MONTH, redis_server: settings.config.REDIS_URL
-  configure :development, :test do
-    use Rack::Session::Pool, expire_after: ONE_MONTH
+  # configure :development, :test do
+  #   use Rack::Session::Pool, expire_after: ONE_MONTH
+  # # end
+  #
+  # # configure :production do
+  #   use Rack::Session::Redis, expire_after: ONE_MONTH, redis_server: settings.config.REDIS_URL
   # end
-
-  # configure :production do
-    use Rack::Session::Redis, expire_after: ONE_MONTH, redis_server: settings.config.REDIS_URL
-  end
   use Rack::Flash
 
   def current_account?(params)
