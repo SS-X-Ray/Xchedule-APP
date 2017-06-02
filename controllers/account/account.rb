@@ -53,7 +53,7 @@ class XcheduleApp < Sinatra::Base
     @current_account = nil
     SecureSession.new(session).delete(:current_account)
     flash[:notice] = 'You have logged out - please login again to use this site'
-    slim :login
+    redirect '/account/login'
   end
 
   get '/google_callback/?' do
