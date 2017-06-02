@@ -14,9 +14,8 @@ class XcheduleApp < Sinatra::Base
 
   def google_sso_url
     url = 'https://accounts.google.com/o/oauth2/v2/auth'
-    scope = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email '
+    scope = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email '
     params = ["client_id=#{settings.config.GH_CLIENT_ID}",
-      # now set the redirect_uri to app, it should be #{settings.config.API_URL}/account/login/?
               "redirect_uri=#{settings.config.APP_URL}/google_callback",
               'response_type=code',
               "scope=#{scope}"]
@@ -59,10 +58,11 @@ class XcheduleApp < Sinatra::Base
 
   get '/google_callback/?' do
     begin
-      sso_account = FindAuthenticatedgAccount.new(settings.config)
+      sso_account = FindAuthenticatedGoogleAccount.new(settings.config)
                                                   .call(params['code'])
       authenticate_login(sso_account)
       # redirect "/account/#{@current_account['username']}/projects"
+      # 還沒寫
       redirect '/'
     rescue => e
       flash[:error] = 'Could not sign in using Github'
