@@ -15,7 +15,7 @@ class XcheduleApp < Sinatra::Base
   def google_sso_url
     url = 'https://accounts.google.com/o/oauth2/v2/auth'
     scope = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email '
-    params = ["client_id=#{settings.config.GH_CLIENT_ID}",
+    params = ["client_id=#{settings.config.GOOGLE_CLIENT_ID}",
               "redirect_uri=#{settings.config.APP_URL}/google_callback",
               'response_type=code',
               "scope=#{scope}"]
