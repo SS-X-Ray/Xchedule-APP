@@ -13,12 +13,14 @@ class CalMatching
   A_DAY = 86_400
 
   # duration_hash = { start: 'Date1', end: 'Date2' }, class = string
-  # limitation_array = { up: Time1, low: Time2] of a day, class = float
-  # activity_length class = integer(minutes)
+  # limitation_hash = { up: Time1, low: Time2 } of a day, class = float
+  #   e.g. Time1 = 8    (upper limit equals to 08:00 a.m.)
+  #        Time2 = 18.5 (lower limit equals to 18:30 p.m.)
+  # activity_length class = integer (unit: minutes)
   # accounts = an array of accounts, e.g. [acc1, acc2, acc3]
   # account should include array of hashes with string values
-  #  e.g. [ {"start": "2017-06-02T08:30:00Z", "end": "2017-06-02T09:30:00Z"},
-  #         {"start": "2017-06-11T05:30:00Z", "end": "2017-06-11T09:00:00Z"} ]
+  #   e.g. [ {"start": "2017-06-02T08:30:00Z", "end": "2017-06-02T09:30:00Z"},
+  #          {"start": "2017-06-11T05:30:00Z", "end": "2017-06-11T09:00:00Z"} ]
   def self.compare(params)
     Dry.Transaction(container: self) do
       step :set_duration
@@ -39,18 +41,21 @@ class CalMatching
 
   def self.daily_limitation(param, start_date, end_date)
     limitation = []
-    (start_date..end_date).step(EVERY_DAY) do |date|
-      limitation << (date..(date + param[:up] * A_HOUR))
-      limitation << ((date + param[:low] * A_HOUR)..(date + A_DAY))
-      limitation.flatten
+    (start_date..end_date).step(A_DAY) do |date|
+      limitation << (date..(date + param[:up] * A_HOUR)).to_a
+      limitation << ((date + param[:low] * A_HOUR)..(date + A_DAY)).to_a
     end
+    limitation.flatten
   end
 
   register :set_duration, lambda { |params|
     begin
-      params[:start_date] = date_2_i(params[:duration_hash][:start])
-      params[:end_date] = date_2_i(params[:duration_hash][:end]) + A_DAY - A_MIN
+      start_date = date_2_i(params[:duration_hash][:start])
+      end_date = date_2_i(params[:duration_hash][:end]) + A_DAY - A_MIN
+
       params[:duration] = (start_date..end_date).step(A_MIN).to_a
+      params[:start_date] = start_date
+      params[:end_date] = end_date
 
       Right(params)
     rescue => e
@@ -60,7 +65,8 @@ class CalMatching
 
   register :set_limitation, lambda { |params|
     begin
-      limitation = daily_limitation(limitation_hash, params[:start_date],
+      limitation = daily_limitation(params[:limitation_hash],
+                                    params[:start_date],
                                     params[:end_date])
       params[:limitated_template] = params[:duration] - limitation
 
