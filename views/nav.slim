@@ -1,23 +1,24 @@
-div class='container-fluid'
-  div class='navbar-header'
-    button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#bs-example-navbar-collapse-1'
-      span class='sr-only' Toggle navigation
-      span class='icon-bar'
-      span class='icon-bar'
-      span class='icon-bar'
-    a class='navbar-brand' href='/' Xchedule
+nav class='navbar navbar-default'
+  div class='container-fluid'
+    div class='navbar-header'
+      button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#bs-example-navbar-collapse-1'
+        span class='sr-only' Toggle navigation
+        span class='icon-bar'
+        span class='icon-bar'
+        span class='icon-bar'
+      a class='navbar-brand' href='/' Xchedule
 
-  div class='collapse navbar-collapse' id='bs-example-navbar-collapse-1'
-    ul class='nav navbar-nav navbar-right'
-      - if @current_account
-        p class='navbar-text navbar-right'
-          = "Hi! #{@current_account['username']}"
-        li
-          a href="/account/#{@current_account['username']}" Account
-        li
-          a href='/account/logout' Log Out
-      - else
-        li
-          a href='/account/login' Log In
-        li
-          a href='/account/register' Register
+    div class='collapse navbar-collapse' id='bs-example-navbar-collapse-1'
+      ul class='nav navbar-nav navbar-right'
+        - if @current_account
+          p class='navbar-text navbar-right'
+            = "Hi! #{@current_account['username']}"
+          li
+            a href="/account/#{@current_account['username']}" Account
+          li
+            a href='/account/logout' Log Out
+        - else
+          li
+            a href='/account/login' Log In
+          li
+            a href='/account/register' Register

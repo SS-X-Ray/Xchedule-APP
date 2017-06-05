@@ -53,7 +53,7 @@ class XcheduleApp < Sinatra::Base
   end
 
   before do
-    @current_account = session[:current_account]
+    @current_account = SecureSession.new(session).get(:current_account)
     @auth_token = SecureSession.new(session).get(:auth_token)
   end
 
