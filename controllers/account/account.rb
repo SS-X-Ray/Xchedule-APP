@@ -42,7 +42,7 @@ class XcheduleApp < Sinatra::Base
     if auth
       authenticate_login(auth)
       flash[:notice] = "Welcome back #{@current_account['username']}"
-      redirect '/'
+      redirect "/account/#{@current_account['username']}"
     else
       flash[:error] = 'Your username or password did not match our records'
       redirect '/account/login/'
