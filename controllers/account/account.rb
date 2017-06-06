@@ -61,11 +61,10 @@ class XcheduleApp < Sinatra::Base
       sso_account = FindAuthenticatedGoogleAccount.new(settings.config)
                                                   .call(params['code'])
       authenticate_login(sso_account)
-      # redirect "/account/#{@current_account['username']}/projects"
-      # 還沒寫
-      redirect '/'
+      flash[:notice] = "Welcome back #{@current_account['username']}"
+      redirect "/account/#{@current_account['username']}"
     rescue => e
-      flash[:error] = 'Could not sign in using Github'
+      flash[:error] = 'Could not sign in using Google'
       puts "RESCUE: #{e}"
       redirect 'account/login'
     end

@@ -6,7 +6,7 @@ require 'rack-flash'
 require 'rack/ssl-enforcer'
 require 'rack/session/redis'
 
-# Base class for ConfigShare Web Application
+# Base class for Xchedule Web Application
 class XcheduleApp < Sinatra::Base
   extend Econfig::Shortcut
 

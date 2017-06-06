@@ -1,6 +1,6 @@
 require 'sinatra'
 
-# Base class for ConfigShare Web Application
+# Base class for Xchedule Web Application
 class XcheduleApp < Sinatra::Base
   get '/account/:username/activities/?' do
     if current_account?(params)
