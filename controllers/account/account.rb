@@ -71,6 +71,39 @@ class XcheduleApp < Sinatra::Base
     end
   end
 
+  def get_access_token(code)
+    HTTP.headers(accept: 'application/json')
+        .post('https://www.googleapis.com/oauth2/v4/token',
+              form: { client_id: settings.config.GOOGLE_CLIENT_ID,
+                      client_secret: settings.config.GOOGLE_CLIENT_SECRET,
+                      grant_type: 'authorization_code',
+                      redirect_uri: "#{settings.config.APP_URL}/register_callback",
+                      code: code })
+        .parse['access_token']
+  end
+
+  get '/register_callback/?' do
+    begin
+      current_account = SecureSession.new(session).get(:current_account)
+      email = current_account['email']
+      access_token = get_access_token(params['code'])
+      response = HTTP.patch("#{settings.config.API_URL}/account/access_token/",
+                           json: { email: email,
+                                   access_token: access_token })
+      if response
+        flash[:notice] = 'Please login with your new username and password'
+        redirect '/account/login'
+      else
+        flash[:error] = 'Your account could not be created. Please try again'
+        redirect '/account/register'
+      end
+    rescue => e
+      flash[:error] = 'Could not set access_token to account'
+      puts "RESCUE: #{e}"
+      redirect 'account/login'
+    end
+  end
+
   get '/account/register/?' do
     slim(:register)
   end
