@@ -52,6 +52,7 @@ class XcheduleApp < Sinatra::Base
   get '/account/logout/?' do
     @current_account = nil
     SecureSession.new(session).delete(:current_account)
+    SecureSession.new(session).delete(:auth_token)
     flash[:notice] = 'You have logged out - please login again to use this site'
     redirect '/account/login'
   end
