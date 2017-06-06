@@ -37,9 +37,6 @@ class XcheduleApp < Sinatra::Base
 
   # Post register account
   post '/account/register/:token_secure/verify' do
-    # redirect "/register/#{params[:token_secure]}/verify" if
-    #   (params[:password] != params[:password_confirm]) ||
-    #   params[:password].empty?
     passwords = Passwords.call(params)
     if passwords.failure?
       flash[:error] = passwords.messages.values.join('; ')
@@ -56,10 +53,31 @@ class XcheduleApp < Sinatra::Base
 
     if result
       flash[:notice] = 'Please login with your new username and password'
-      redirect '/account/login'
+      # redirect '/account/login'
     else
       flash[:error] = 'Your account could not be created. Please try again'
-      redirect '/account/register'
+      # redirect '/account/register'
     end
+
+    pararms = { email: new_account['email'], password: passwords[:password] }
+    auth = FindAuthenticatedAccount.new(settings.config)
+                                   .call(pararms)
+    if auth
+      authenticate_login(auth)
+    else
+      flash[:error] = 'Your username or password did not match our records'
+    end
+    url = google_register_url
+    redirect url
+  end
+
+  def google_register_url
+    url = 'https://accounts.google.com/o/oauth2/v2/auth'
+    scope = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email '
+    params = ["client_id=#{settings.config.GOOGLE_CLIENT_ID}",
+              "redirect_uri=#{settings.config.APP_URL}/register_callback",
+              'response_type=code',
+              "scope=#{scope}"]
+    "#{url}?#{params.join('&')}"
   end
 end
