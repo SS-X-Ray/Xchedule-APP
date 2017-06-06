@@ -1,0 +1,46 @@
+div class="modal fade" id="ActivityDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  div class="modal-dialog" role="document"
+    div class="modal-content"
+    
+      div class="modal-header"
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+        h4 class="modal-title" id="myModalLabel" 
+          // activity name
+        
+      div class="modal-body"
+        form class="form-horizontal" action="/account/register" method="post" id="user-form"
+          
+          div class="form-group"
+            label for='inputEmail' class='col-sm-3 control-label' Members
+            div class="col-sm-8"
+              h6 id="participants_list"
+                // participants list
+          
+          div class='form-group'
+            label for='inputLocation' class='col-sm-3 control-label' Location
+            div class='col-sm-8'
+              input type='email' class='form-control' name='email' id='inputLocation' placeholder='Location' disabled='true'
+
+          div class="form-group"
+            label for='inputEmail' class='col-sm-3 control-label' Result
+              div class="col-sm-8"
+                div class="well"
+                  h5 id="result_time"
+                    // result_time
+                    
+      div class="modal-footer"
+        button type="button" class="btn btn-primary" data-dismiss="modal" Close
+
+javascript:
+  $('#ActivityDetailModal').on('show.bs.modal', function() {
+    $.get("/account/#{@current_account['username']}/activities/#{@activity['id']}/?", function(response){
+      var element = JSON.parse(response);
+      $('#ActivityDetailModal').find('#myModalLabel').html(element.name);
+      $.each(element.participants, function(value) {
+        $('#ActivityDetailModal').find('#participants_list').append('<span class="label label-primary">' + value + '</span>');
+      });
+      $('#ActivityDetailModal').find('#inputLocation').val(element.location);
+      $('#ActivityDetailModal').find('#result_time').html(element.result_time);
+    });
+  });

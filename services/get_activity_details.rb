@@ -15,7 +15,8 @@ class GetActivityDetails
   private
 
   def extract_activity_details(activity_data)
-    { name: activity_data['attributes']['name'],
+    { id: activity_data['id'],
+      name: activity_data['attributes']['name'],
       location: activity_data['attributes']['location'],
       possible_time: activity_data['attributes']['possible_time'],
       result_time: activity_data['attributes']['result_time'],

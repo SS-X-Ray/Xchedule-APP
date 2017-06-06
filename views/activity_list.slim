@@ -10,10 +10,10 @@ div class="row"
         h4 You
           span class="text-primary" organized
       div class="col-xs-3"
-        a href="#" class="btn btn-success pull-right"
+        a href="#" class="btn btn-success pull-right" data-toggle="modal" data-target="#AddActivityModal"
           span class="glyphicon glyphicon-plus"   New
     div class="list-group"
-      a href="#" class="list-group-item" data-toggle="modal" data-target="#myModal"
+      a href="#" class="list-group-item" data-toggle="modal" data-target="#ActivityDetailModal"
         h4 class="list-group-item-heading"
           = "#{@activity['name']}"
           span class="pull-right"
@@ -39,3 +39,6 @@ div class="row"
           = "Location: #{@activity['location']}"
         p class="list-group-item-text"
           = "Time: #{@activity['result_time']}"
+
+include :add_activity_modal
+include :activity_detail_modal
