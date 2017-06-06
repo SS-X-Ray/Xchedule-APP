@@ -1,6 +1,6 @@
 require 'sinatra'
 
-# Base class for ConfigShare Web Application
+# Base class for Xchedule Web Application
 class XcheduleApp < Sinatra::Base
   get '/account/:username/activities/?' do
     if current_account?(params)
@@ -32,7 +32,7 @@ class XcheduleApp < Sinatra::Base
     halt_if_incorrect_user(params)
 
     participant = AddParticipantToActivity.call(
-      participant_email: params[:email],
+      participant_emails: params[:participant_emails],
       activity_id: params[:activity_id],
       auth_token: session[:auth_token])
 
@@ -57,13 +57,22 @@ class XcheduleApp < Sinatra::Base
       redirect activities_url
     else
       begin
-        new_activity = CreateNewActivity.call(
-          auth_token: session[:auth_token],
-          owner: @current_account,
-          new_activity: new_activity_data.to_h)
-        flash[:notice] = 'Your new activity has been created! '\
-                         ' Now invite participants.'
-        redirect activities_url + "/#{new_activity['id']}"
+        activity_id = CreateNewActivity.new(settings.config)
+                                       .call(auth_token: session[:auth_token],
+                                             owner_id: @current_account['id'],
+                                             activity_name: activity_name,
+                                             activity_location: activity_location)
+        flash[:notice] = 'Your new activity has been created!'
+        halt 500 if response.code != 200
+
+        accounts = AddParticipantToActivity.new(settings.config)
+                                           .call(participants: participants,
+                                                 activity_id: activity_id,
+                                                 auth_token: session[:auth_token])
+        flash[:notice] = 'Participant added to activity!'
+        halt 500 if response.code != 200
+
+        @possible_time = CalMatching.compare({duration_hash: duration_hash, limitation_hash: limitation_hash, activity_length: activity_length, accounts: accounts})
       rescue => e
         flash[:error] = 'Something went wrong -- we will look into it!'
         logger.error "NEW_ACTIVITY FAIL: #{e}"

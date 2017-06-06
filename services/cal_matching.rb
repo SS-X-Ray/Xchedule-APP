@@ -124,6 +124,9 @@ class CalMatching
         [Time.at(possible_time.first), Time.at(possible_time.last)]
       end
 
+      # Force it to fail if no matched available time
+      chunked_time + 1 if chunked_time.empty?
+
       # Returns an array of arrays of time.
       # => e.g. [[start_datetime1, end_datetime1],
       # =>       [start_datetime1, end_datetime1]]
