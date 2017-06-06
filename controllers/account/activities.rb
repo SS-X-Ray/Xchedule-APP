@@ -60,19 +60,25 @@ class XcheduleApp < Sinatra::Base
         activity_id = CreateNewActivity.new(settings.config)
                                        .call(auth_token: session[:auth_token],
                                              owner_id: @current_account['id'],
-                                             activity_name: activity_name,
-                                             activity_location: activity_location)
+                                             activity_name: params[:activity_name],
+                                             activity_location: params[:activity_location])
         flash[:notice] = 'Your new activity has been created!'
         halt 500 if response.code != 200
 
         accounts = AddParticipantToActivity.new(settings.config)
-                                           .call(participants: participants,
+                                           .call(participants: params[:participants],
                                                  activity_id: activity_id,
-                                                 auth_token: session[:auth_token])
+                                                 auth_token: session[:auth_token],
+                                                 duration_hash: params[:duration_hash])
+        owner_freebusy = GetFreeBusy.call(@current_account['access_token'], params[:duration_hash])
+        accounts << CalAccount.new(owner_freebusy)
         flash[:notice] = 'Participant added to activity!'
         halt 500 if response.code != 200
 
-        @possible_time = CalMatching.compare({duration_hash: duration_hash, limitation_hash: limitation_hash, activity_length: activity_length, accounts: accounts})
+        @possible_time = CalMatching.compare({duration_hash: params[:duration_hash],
+                                              limitation_hash: params[:limitation_hash],
+                                              activity_length: params[:activity_length],
+                                              accounts: accounts})
       rescue => e
         flash[:error] = 'Something went wrong -- we will look into it!'
         logger.error "NEW_ACTIVITY FAIL: #{e}"

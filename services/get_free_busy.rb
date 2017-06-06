@@ -21,6 +21,7 @@ class GetFreeBusy
     # Post and parse response body
     response = HTTP.post('https://www.googleapis.com/calendar/v3/freeBusy',
                          params: { access_token: access_token }, json: request)
+                         puts response.body
     JSON.parse(response.body)['calendars']['primary']['busy']
   end
 end
