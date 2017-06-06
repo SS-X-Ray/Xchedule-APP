@@ -111,4 +111,15 @@ class XcheduleApp < Sinatra::Base
     halt_if_incorrect_user(params)
     slim(:account)
   end
+
+  # Find username by email
+  get '/account/parse/:email' do
+    response = HTTP.get("#{settings.config.API_URL}/account/parse/#{params['email']}")
+    if response.code == 200
+      response
+    else
+      halt 400
+      flash[:error] = 'Cannot find account by email'
+    end
+  end
 end
