@@ -29,7 +29,16 @@ class="modal fade" id="AddActivityModal" tabindex="-1" role="dialog" aria-labell
           div class='form-group'
             label for='inputLocation' class='col-sm-3 control-label' Location
             div class='col-sm-8'
-              input type='email' class='form-control' name='email' id='inputLocation' placeholder='Location'
+              input type='email' class='form-control' name='activity_location' id='inputLocation' placeholder='Location'
+          
+          div class="form-group"
+            label for='selectLength' class="col-sm-3 control-label" Length(hour)
+            div class="col-sm-8"
+             select name="activity_length" class="form-control"
+              option value="0.5" 0.5
+              option value="1" 1
+              option value="1.5" 1.5
+              option vaule="2" 2
           
           div class='form-group'
             label for='inputDuration' class='col-sm-3 col-xs-12 control-label' Duration
@@ -60,6 +69,7 @@ javascript:
         var data = JSON.parse(response);
         $("#members_list").append('<span class="label label-primary">' + data.username + '</span>');
         participant_arr.push(data.id);
+        $("#email_input").val("");
       }
     });
     $("#participants_input").val(participant_arr);
