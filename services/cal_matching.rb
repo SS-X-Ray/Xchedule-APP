@@ -42,8 +42,8 @@ class CalMatching
   def self.daily_limitation(param, start_date, end_date)
     limitation = []
     (start_date..end_date).step(A_DAY) do |date|
-      limitation << (date..(date + param[:up] * A_HOUR)).to_a
-      limitation << ((date + param[:low] * A_HOUR)..(date + A_DAY)).to_a
+      limitation << (date..(date + (param[:up] * A_HOUR)).to_i).to_a
+      limitation << ((date + (param[:low] * A_HOUR).to_i)..(date + A_DAY)).to_a
     end
     limitation.flatten
   end
@@ -123,6 +123,9 @@ class CalMatching
       chunked_time.map! do |possible_time|
         [Time.at(possible_time.first), Time.at(possible_time.last)]
       end
+
+      # Force it to fail if no matched available time
+      chunked_time + 1 if chunked_time.empty?
 
       # Returns an array of arrays of time.
       # => e.g. [[start_datetime1, end_datetime1],

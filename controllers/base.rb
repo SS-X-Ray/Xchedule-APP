@@ -42,6 +42,7 @@ class XcheduleApp < Sinatra::Base
   use Rack::Flash
 
   def current_account?(params)
+    params[:username] = params[:username].force_encoding('UTF-8')
     @current_account && @current_account['username'] == params[:username]
   end
 

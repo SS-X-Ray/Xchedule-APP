@@ -22,6 +22,10 @@ class XcheduleApp < Sinatra::Base
     "#{url}?#{params.join('&')}"
   end
 
+  get '/account/register/?' do
+    @register_url = google_sso_url
+    slim :register
+  end
 
   get '/account/login/?' do
     @google_url = google_sso_url
@@ -42,7 +46,7 @@ class XcheduleApp < Sinatra::Base
     if auth
       authenticate_login(auth)
       flash[:notice] = "Welcome back #{@current_account['username']}"
-      redirect "/account/#{@current_account['username']}"
+      redirect "/account/#{@current_account['username']}/activities/?"
     else
       flash[:error] = 'Your username or password did not match our records'
       redirect '/account/login/'
@@ -52,6 +56,7 @@ class XcheduleApp < Sinatra::Base
   get '/account/logout/?' do
     @current_account = nil
     SecureSession.new(session).delete(:current_account)
+    SecureSession.new(session).delete(:auth_token)
     flash[:notice] = 'You have logged out - please login again to use this site'
     redirect '/account/login'
   end
@@ -62,7 +67,7 @@ class XcheduleApp < Sinatra::Base
                                                   .call(params['code'])
       authenticate_login(sso_account)
       flash[:notice] = "Welcome back #{@current_account['username']}"
-      redirect "/account/#{@current_account['username']}"
+      redirect "/account/#{@current_account['username']}/activities/?"
     rescue => e
       flash[:error] = 'Could not sign in using Google'
       puts "RESCUE: #{e}"
@@ -110,5 +115,16 @@ class XcheduleApp < Sinatra::Base
   get '/account/:username/?' do
     halt_if_incorrect_user(params)
     slim(:account)
+  end
+
+  # Find username by email
+  get '/account/parse/:email' do
+    response = HTTP.get("#{settings.config.API_URL}/account/parse/#{params['email']}")
+    if response.code == 200
+      JSON.pretty_generate(id: response.parse['id'], username: response.parse['username'])
+    else
+      halt 400
+      flash[:error] = 'Cannot find account by email'
+    end
   end
 end
