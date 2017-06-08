@@ -23,25 +23,31 @@ div class="modal fade" id="ActivityDetailModal" tabindex="-1" role="dialog" aria
               input type='email' class='form-control' name='email' id='inputLocation' placeholder='Location' disabled='true'
 
           div class="form-group"
-            label for='inputEmail' class='col-sm-3 control-label' Result
-              div class="col-sm-8"
-                div class="well"
-                  h5 id="result_time"
-                    // result_time
+            label for='inputEmail' class='col-sm-3 control-label' Possible Time
+            div class="col-sm-8"
+              div class="well"
+                h6 id="possible_time"
+                  // result_time
                     
       div class="modal-footer"
         button type="button" class="btn btn-primary" data-dismiss="modal" Close
 
 javascript:
-  $('#ActivityDetailModal').on('show.bs.modal', function() {
+  $('#ActivityDetailModal').on('show.bs.modal', function(e) {
+    $('#ActivityDetailModal').find('#participants_list').html("");
     var activity_id = $(e.relatedTarget).data('activity_id');
-    $.get("/account/#{@current_account['username']}/activities/" + activity_id + "/?", function(response){
+    $.get("#{@config.APP_URL}/account/#{@current_account['username']}/activities/" + activity_id + "/", function(response, status){
       var element = JSON.parse(response);
       $('#ActivityDetailModal').find('#myModalLabel').html(element.name);
-      $.each(element.participants, function(value) {
-        $('#ActivityDetailModal').find('#participants_list').append('<span class="label label-primary">' + value + '</span>');
+      $.each(element.people, function(index, value) {
+        $('#ActivityDetailModal').find('#participants_list').append('<span class="label label-primary">' + value.username + '</span>');
       });
       $('#ActivityDetailModal').find('#inputLocation').val(element.location);
-      $('#ActivityDetailModal').find('#result_time').html(element.result_time);
+      var time = JSON.parse(element.possible_time);
+      $.each(time, function(index, value) {
+        $('#ActivityDetailModal').find('#possible_time').append('<span class="label label-default">' + value[0] + ' ~ ' + value[1] + '</span><br><br>');
+        // alert(value.class);
+      });
+      // $('#ActivityDetailModal').find('#possible_time').html(element.possible_time);
     });
   });

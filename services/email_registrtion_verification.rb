@@ -34,7 +34,7 @@ class EmailRegistrationVerification
     verification_url = "#{@config.APP_URL}/account/register/#{token}/verify"
 
     <<~END_EMAIL
-      <H1>ShareConfig Registration Received<H1>
+      <H1>Xchedule Registration Received<H1>
       <p>Please <a href=\"#{verification_url}\">click here</a> to validate your
       email. You will be asked to set a password to activate your account.</p>
     END_EMAIL

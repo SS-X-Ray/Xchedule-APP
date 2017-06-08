@@ -9,7 +9,6 @@ class XcheduleApp < Sinatra::Base
               "redirect_uri=#{settings.config.APP_URL}/google_callback",
               'response_type=code',
               "scope=#{scope}"]
-    puts "#{url}?#{params.join('&')}"
     "#{url}?#{params.join('&')}"
   end
 

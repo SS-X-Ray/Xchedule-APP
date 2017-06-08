@@ -121,7 +121,6 @@ class XcheduleApp < Sinatra::Base
   get '/account/parse/:email' do
     response = HTTP.get("#{settings.config.API_URL}/account/parse/#{params['email']}")
     if response.code == 200
-      puts response
       JSON.pretty_generate(id: response.parse['id'], username: response.parse['username'])
     else
       halt 400
