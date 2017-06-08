@@ -17,6 +17,9 @@ class GetAllActivities
   def extract_activities(activities)
     activities['data'].map do |acti|
       { name: acti['attributes']['name'],
+        possible_time: acti['attributes']['possible_time'],
+        result_time: acti['attributes']['result_time'],
+        location: acti['attributes']['location'],
         organizer: acti['relationships']['organizer'] }
     end
   end
