@@ -42,8 +42,8 @@ class CalMatching
   def self.daily_limitation(param, start_date, end_date)
     limitation = []
     (start_date..end_date).step(A_DAY) do |date|
-      limitation << (date..(date + param[:up] * A_HOUR)).to_a
-      limitation << ((date + param[:low] * A_HOUR)..(date + A_DAY)).to_a
+      limitation << (date..(date + (param[:up] * A_HOUR)).to_i).to_a
+      limitation << ((date + (param[:low] * A_HOUR).to_i)..(date + A_DAY)).to_a
     end
     limitation.flatten
   end
