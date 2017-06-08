@@ -12,7 +12,7 @@ class FindAuthenticatedGoogleAccount
   end
 
   def get_access_token(code)
-    HTTP.headers(accept: 'application/json')
+    res = HTTP.headers(accept: 'application/json')
         .post('https://www.googleapis.com/oauth2/v4/token',
               form: { client_id: @config.GOOGLE_CLIENT_ID,
                       client_secret: @config.GOOGLE_CLIENT_SECRET,
@@ -20,6 +20,10 @@ class FindAuthenticatedGoogleAccount
                       redirect_uri: "#{@config.APP_URL}/google_callback",
                       code: code })
         .parse['access_token']
+    ###
+    puts res
+    ###
+    res
   end
 
   def get_sso_account_from_api(access_token)

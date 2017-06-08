@@ -42,7 +42,7 @@ class XcheduleApp < Sinatra::Base
     if auth
       authenticate_login(auth)
       flash[:notice] = "Welcome back #{@current_account['username']}"
-      redirect "/account/#{@current_account['username']}"
+      redirect "/account/#{@current_account['username']}/activities/?"
     else
       flash[:error] = 'Your username or password did not match our records'
       redirect '/account/login/'
@@ -63,7 +63,7 @@ class XcheduleApp < Sinatra::Base
                                                   .call(params['code'])
       authenticate_login(sso_account)
       flash[:notice] = "Welcome back #{@current_account['username']}"
-      redirect "/account/#{@current_account['username']}"
+      redirect "/account/#{@current_account['username']}/activities/?"
     rescue => e
       flash[:error] = 'Could not sign in using Google'
       puts "RESCUE: #{e}"
@@ -117,7 +117,8 @@ class XcheduleApp < Sinatra::Base
   get '/account/parse/:email' do
     response = HTTP.get("#{settings.config.API_URL}/account/parse/#{params['email']}")
     if response.code == 200
-      response
+      puts response
+      JSON.pretty_generate(id: response.parse['id'], username: response.parse['username'])
     else
       halt 400
       flash[:error] = 'Cannot find account by email'

@@ -34,7 +34,8 @@ div class="modal fade" id="ActivityDetailModal" tabindex="-1" role="dialog" aria
 
 javascript:
   $('#ActivityDetailModal').on('show.bs.modal', function() {
-    $.get("/account/#{@current_account['username']}/activities/#{@activity['id']}/?", function(response){
+    var activity_id = $(e.relatedTarget).data('activity_id');
+    $.get("/account/#{@current_account['username']}/activities/" + activity_id + "/?", function(response){
       var element = JSON.parse(response);
       $('#ActivityDetailModal').find('#myModalLabel').html(element.name);
       $.each(element.participants, function(value) {
