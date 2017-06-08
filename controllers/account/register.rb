@@ -13,11 +13,6 @@ class XcheduleApp < Sinatra::Base
     "#{url}?#{params.join('&')}"
   end
 
-  get '/account/register/?' do
-    @register_url = google_sso_url
-    slim :register
-  end
-
   # Page register
   post '/account/register/?' do
     registration = Registration.call(params)
